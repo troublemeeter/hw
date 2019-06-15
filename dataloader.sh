@@ -14,5 +14,5 @@ rm user_app_usage.tar.bz2.tar.bz2
 
 python prepare.py
 
-cd ..
-python train.py
+# cd ..
+# python train.py
