@@ -30,19 +30,19 @@ dropout_prob = 0.7
 
 # Architecture
 num_features =    # todo : compute
-num_hidden = [128,256]
+num_hidden = [512,256]
 num_classes = 6
 
-train_loader,test_loader = LoadData()
+train_loader,test_loader = LoadData(batch_size)
 
 ##########################
 ### TRAIN
 ##########################
 
 torch.manual_seed(random_seed)
-model = MultilayerPerceptron(num_features=num_features,
-							 num_hidden = num_hidden,
-                             num_classes=num_classes)
+model = ClassifyModel(num_features=num_features,
+					  num_hidden = num_hidden,
+                      num_classes=num_classes)
 
 model = model.to(device)
 
@@ -53,7 +53,7 @@ def compute_accuracy(net, data_loader):
     correct_pred, num_examples = 0, 0
     with torch.no_grad():
         for features, targets in data_loader:
-            features = features.view(-1, 28*28).to(device)
+            features = features.to(device)
             targets = targets.to(device)
             logits, probas = net(features)
             _, predicted_labels = torch.max(probas, 1)
