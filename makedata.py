@@ -1,5 +1,6 @@
 import torch.utils.data as Data
 from dataset.prepare import prepare
+import torch
 # 不知道数据精度不统一会不会有问题
 # Note transforms.ToTensor() scales input images
 # to 0-1 range
@@ -7,7 +8,10 @@ from dataset.prepare import prepare
 
 def LoadData(BATCH_SIZE):
     x,y = prepare()
-    dataset = Data.TensorDataset(data_tensor=x, target_tensor=y)
+    x = torch.from_numpy(x)
+    y = torch.from_numpy(y)
+    print('tensor x and y of size: ',x.size(),y.size())
+    dataset = Data.TensorDataset(x, y)
 
     train_size = int(0.9 * len(dataset))
     test_size = len(dataset) - train_size
@@ -32,7 +36,7 @@ def LoadData(BATCH_SIZE):
     for feature, labels in train_loader:  
         print('Checking DataLoader ...')
         print('feature dimensions:', feature.shape)
-        print('labels exmaple:', labels)
+        print('labels exmaple:', labels[:10])
         break
 
     return train_loader,test_loader

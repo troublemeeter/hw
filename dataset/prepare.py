@@ -2,7 +2,17 @@ import csv
 import numpy as np
 import os
 import pandas as pd
+import pickle
+
 def prepare():
+
+    if os.path.exists('dataset/dataset.pkl'):
+        print('reading data from dataset/dataset.pkl ...')
+        with open('dataset/dataset.pkl','rb') as f:
+            x,y = pickle.load(f)
+        return x,y
+
+
     age_train = pd.read_csv('dataset/age_train.csv',header=None)
     age_train.columns = ['uId','age_group']
     app_info = pd.read_csv('dataset/app_info.csv',header=None)
@@ -97,5 +107,11 @@ def prepare():
     x = join_data.values
 
     print('x shape: ',x.shape,' y shape: ',y.shape)
+
+
+    with open('dataset/dataset.pkl','wb') as f:
+        print('saving to dataset/dataset.pkl')
+        pickle.dump([x,y],f)
+
 
     return x,y

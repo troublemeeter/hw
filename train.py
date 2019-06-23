@@ -20,6 +20,7 @@ if torch.cuda.is_available():
 
 # Device
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu") # todo : change to multi gpu
+print('device',device)
 
 # Hyperparameters
 random_seed = 1
@@ -29,8 +30,8 @@ batch_size = 512
 dropout_prob = 0.7
 
 # Architecture
-num_features =    # todo : compute
-num_hidden = [512,256]
+num_features = 316   # todo : compute
+num_hidden = [256,128]
 num_classes = 6
 
 train_loader,test_loader = LoadData(batch_size)
@@ -46,7 +47,7 @@ model = ClassifyModel(num_features=num_features,
 
 model = model.to(device)
 
-optimizer = torch.optim.adam(model.parameters(), lr=learning_rate)
+optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
 def compute_accuracy(net, data_loader):
     net.eval()
@@ -58,7 +59,7 @@ def compute_accuracy(net, data_loader):
             logits, probas = net(features)
             _, predicted_labels = torch.max(probas, 1)
             num_examples += targets.size(0)
-            correct_pred += (predicted_labels == targets).sum()
+            correct_pred += (predicted_labels+1 == targets).sum()
         return correct_pred.float()/num_examples * 100
     
 
