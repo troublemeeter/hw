@@ -96,12 +96,12 @@ def prepare():
     join_data = pd.merge(age_train,user_behavior_info, on=['uId'], how='inner')
     join_data = pd.merge(join_data,user_basic_info,on=['uId'],how='inner')
     join_data = pd.merge(join_data,user_app_actived,on=['uId'],how='inner')
-
+    join_data = join_data.dropna()
     print('prepare data done...')
     print(join_data.info(memory_usage='deep'))
     # print(len(join_data)/2010000)
 
-    y = join_data['age_group'].values
+    y = join_data['age_group'].values - 1
     del join_data['uId']
     del join_data['age_group']
     x = join_data.values

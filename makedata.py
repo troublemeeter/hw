@@ -1,6 +1,7 @@
 import torch.utils.data as Data
 from dataset.prepare import prepare
 import torch
+import numpy as np
 # 不知道数据精度不统一会不会有问题
 # Note transforms.ToTensor() scales input images
 # to 0-1 range
@@ -8,8 +9,10 @@ import torch
 
 def LoadData(BATCH_SIZE):
     x,y = prepare()
-    x = torch.from_numpy(x)
-    y = torch.from_numpy(y)
+    print('x has nan:',np.isnan(x).any())
+    print('y has nan:',np.isnan(y).any())
+    x = torch.from_numpy(x).float()
+    y = torch.from_numpy(y).long()
     print('tensor x and y of size: ',x.size(),y.size())
     dataset = Data.TensorDataset(x, y)
 
