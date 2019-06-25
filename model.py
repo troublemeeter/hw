@@ -10,7 +10,8 @@ class ClassifyModel(torch.nn.Module):
 
         self.linear_1 = torch.nn.Linear(num_features, num_hidden_1)        
         self.linear_2 = torch.nn.Linear(num_hidden_1, num_hidden_2)        
-        self.linear_out = torch.nn.Linear(num_hidden_2, num_classes)
+        self.linear_out1 = torch.nn.Linear(num_hidden_2, 128)
+        self.linear_out2 = torch.nn.Linear(128, num_classes)
         self.dropout_prob = dropout_prob
         
     def forward(self, x):
@@ -22,6 +23,8 @@ class ClassifyModel(torch.nn.Module):
         out = torch.sigmoid(out)
         # out = F.dropout(out, p=self.dropout_prob, training=self.training)
         
-        logits = self.linear_out(out)
+        logits = self.linear_out1(out)
+        logits = torch.sigmoid(logits)
+        logits = self.linear_out2(logits)
         probas = F.softmax(logits, dim=1)
         return logits, probas

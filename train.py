@@ -30,8 +30,9 @@ batch_size = 256
 dropout_prob = 0.7
 
 # Architecture
-num_features = 316   # todo : compute
-num_hidden = [316,316]
+num_features = 722#316   # todo : compute
+num_hidden = [num_features,num_features]
+# num_hidden = [316,316]
 num_classes = 6
 best_epoch = 3 
 
@@ -43,7 +44,7 @@ train_loader,test_loader = LoadData(batch_size)
 
 torch.manual_seed(random_seed)
 model = ClassifyModel(num_features=num_features,
-					  num_hidden = num_hidden,
+					            num_hidden = num_hidden,
                       num_classes=num_classes,
                       dropout_prob=dropout_prob
                       )
